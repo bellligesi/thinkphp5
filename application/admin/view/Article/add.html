@@ -5,24 +5,24 @@
 </head>
 <body>
 <div class="page-container">
-	<form class="form form-horizontal" id="form-article-add">
+	<form class="form form-horizontal" id="form-article-add" method="post" action="/admin/article/add">
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>文章标题：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="" placeholder="" id="" name="">
+				<input type="text" class="input-text" value="" placeholder="" id="title" name="title">
 			</div>
 		</div>
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-2">简略标题：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="" placeholder="" id="" name="">
+				<input type="text" class="input-text" value="" placeholder="" id="small_title" name="small_title">
 			</div>
 		</div>
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>分类栏目：</label>
 			<div class="formControls col-xs-8 col-sm-9">
 				<span class="select-box">
-				<select name="" class="select">
+				<select name="lanmu" class="select">
 					<option value="0">全部栏目</option>
 					<option value="1">新闻资讯</option>
 					<option value="11">├行业动态</option>
@@ -37,7 +37,7 @@
 			<label class="form-label col-xs-4 col-sm-2">允许评论：</label>
 			<div class="formControls col-xs-8 col-sm-9 skin-minimal">
 				<div class="check-box">
-					<input type="checkbox" id="checkbox-1">
+					<input type="checkbox" name="is_comment" id="checkbox-1">
 					<label for="checkbox-1">&nbsp;</label>
 				</div>
 			</div>
@@ -46,7 +46,7 @@
             <label class="form-label col-xs-4 col-sm-2">是否推荐到首页头图：</label>
             <div class="formControls col-xs-8 col-sm-9 skin-minimal">
                 <div class="check-box">
-                    <input type="checkbox" id="checkbox-1">
+                    <input type="checkbox" name="is_postion" id="checkbox-1">
                     <label for="checkbox-1">&nbsp;</label>
                 </div>
             </div>
@@ -54,25 +54,25 @@
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-2">文章作者：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="0" placeholder="" id="" name="">
+				<input type="text" class="input-text" value="0" placeholder="" id="" name="auther">
 			</div>
 		</div>
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-2">文章来源：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="0" placeholder="" id="" name="">
+				<input type="text" class="input-text" value="0" placeholder="" id="" name="source">
 			</div>
 		</div>
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-2">关键词：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="0" placeholder="" id="" name="">
+				<input type="text" class="input-text" value="0" placeholder="" id="" name="keywords">
 			</div>
 		</div>
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-2">文章摘要：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<textarea name="" cols="" rows="" class="textarea"  placeholder="说点什么...最少输入10个字符" datatype="*10-100" dragonfly="true" nullmsg="备注不能为空！" onKeyUp="$.Huitextarealength(this,200)"></textarea>
+				<textarea name="abstract" cols="" rows="" class="textarea"  placeholder="说点什么...最少输入10个字符" datatype="*10-100" dragonfly="true" nullmsg="备注不能为空！" onKeyUp="$.Huitextarealength(this,200)"></textarea>
 				<p class="textarea-numberbar"><em class="textarea-length">0</em>/200</p>
 			</div>
 		</div>
@@ -90,7 +90,7 @@
 		</div>
 		<div class="row cl">
 			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
-				<button onClick="article_save_submit();" class="btn btn-primary radius" type="button"><i class="Hui-iconfont">&#xe632;</i> 保存并提交审核</button>
+				<button type="submit" class="btn btn-primary radius" ><i class="Hui-iconfont">&#xe632;</i> 保存并提交审核</button>
 				<button onClick="article_save();" class="btn btn-secondary radius" type="button"><i class="Hui-iconfont">&#xe632;</i> 保存草稿</button>
 				<button onClick="layer_close();" class="btn btn-default radius" type="button">&nbsp;&nbsp;取消&nbsp;&nbsp;</button>
 			</div>
@@ -111,6 +111,67 @@
 <!--第三方webuploader上传插件-->
 <script src="__STATIC__/admin/lib/webuploader/0.1.5/webuploader.js"></script>
 <script type="text/javascript">
+$(function(){
+	$('.skin-minimal input').iCheck({
+		checkboxClass: 'icheckbox-blue',
+		radioClass: 'iradio-blue',
+		increaseArea: '20%'
+	});
+
+	//表单验证
+	$("#form-article-add").validate({
+		rules:{
+			title:{
+				required:true,
+			},
+			small_title:{
+				required:true,
+			},
+			lanmu:{
+				required:true,
+			},
+			is_comment:{
+				required:true,
+			},
+			is_postion:{
+				required:true,
+			},
+			auther:{
+				required:true,
+			},
+			source:{
+				required:true,
+			},
+			keywords:{
+				required:true,
+			},
+			abstract:{
+				required:true,
+			},
+		messages: {
+			title: {
+				required: "",
+		},
+		debug:true,
+		onkeyup:false,
+		focusCleanup:true,
+		success:"valid",
+		submitHandler:function(form){
+			//$(form).ajaxSubmit();
+			var index = parent.layer.getFrameIndex(window.name);
+			//parent.$('.btn-refresh').click();
+			parent.layer.close(index);
+		   }
+	    },
+
+		},
+
+	});
+
+});
+
+
+
 var BASE_URL = '/public/static/admin/lib/webuploader/0.1.5/';
 // 初始化Web Uploader  上传图片
 var uploader = WebUploader.create({
@@ -126,7 +187,8 @@ var uploader = WebUploader.create({
 	// 选择文件的按钮。可选。
 	// 内部根据当前运行是创建，可能是input元素，也可能是flash.
 	pick: '#filePicker',
-
+	//控制一次上传的数量
+	fileNumLimit: 1,
 	// 只允许选择图片文件。
 	accept: {
 		title: 'Images',
