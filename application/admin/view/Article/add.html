@@ -5,7 +5,7 @@
 </head>
 <body>
 <div class="page-container">
-	<form class="form form-horizontal" id="form-article-add" method="post" action="/admin/article/add">
+	<form class="form form-horizontal" id="form-article-add">
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>文章标题：</label>
 			<div class="formControls col-xs-8 col-sm-9">
@@ -72,13 +72,14 @@
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-2">文章摘要：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<textarea name="abstract" cols="" rows="" class="textarea"  placeholder="说点什么...最少输入10个字符" datatype="*10-100" dragonfly="true" nullmsg="备注不能为空！" onKeyUp="$.Huitextarealength(this,200)"></textarea>
+				<textarea name="abstract" cols="" rows="" class="textarea"  placeholder="说点什么...最少输入10个字符" datatype="*10-100" dragonfly="true" nullmsg="备注不能为空！"></textarea>
 				<p class="textarea-numberbar"><em class="textarea-length">0</em>/200</p>
 			</div>
 		</div>
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-2">缩略图：</label>
 			<div class="formControls col-xs-8 col-sm-9">
+				<input type="hidden" name="uploadimg" id="uploadimg" value=""/>
 				<div class="uploader-thum-container">
 					<div id="uploader-demo">
 						<!--用来存放item-->
@@ -90,7 +91,7 @@
 		</div>
 		<div class="row cl">
 			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
-				<button type="submit" class="btn btn-primary radius" ><i class="Hui-iconfont">&#xe632;</i> 保存并提交审核</button>
+				<button type="button" class="btn btn-primary radius" ><i class="Hui-iconfont">&#xe632;</i> 保存并提交审核</button>
 				<button onClick="article_save();" class="btn btn-secondary radius" type="button"><i class="Hui-iconfont">&#xe632;</i> 保存草稿</button>
 				<button onClick="layer_close();" class="btn btn-default radius" type="button">&nbsp;&nbsp;取消&nbsp;&nbsp;</button>
 			</div>
@@ -130,12 +131,7 @@ $(function(){
 			lanmu:{
 				required:true,
 			},
-			is_comment:{
-				required:true,
-			},
-			is_postion:{
-				required:true,
-			},
+
 			auther:{
 				required:true,
 			},
@@ -238,8 +234,10 @@ uploader.on( 'uploadProgress', function( file, percentage ) {
 });
 
 // 文件上传成功，给item添加成功class, 用样式标记上传成功。
-uploader.on( 'uploadSuccess', function( file ) {
-
+uploader.on( 'uploadSuccess', function( file,data) {
+	$(function(){
+		$("#uploadimg").val(data._raw);
+	});
 	$( '#'+file.id ).addClass('upload-state-done');
 });
 
@@ -281,7 +279,23 @@ $(function(){
 
 });
 
+//ajax提交表单
+$(function(){
+	$(".col-xs-8 .btn-primary").on('click',function(){
+		var form = $('#form-article-add').serialize();
+		url = '/admin/article/add';
+		$.ajax({
+			'url':url,
+			'dataType':'json',
+			'type':'post',
+			'data':form,
 
+			success:function(type,message,data){
+               alert(2);
+			}
+		})
+	})
+})
 
 </script>
 </body>

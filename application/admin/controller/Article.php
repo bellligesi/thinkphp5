@@ -5,7 +5,12 @@ class Article extends Base{
 
     //文章添加
     public function add(){
-        return $this->fetch();
+        if(request()->isPost()){
+            return 'aaa';
+        }else{
+            return $this->fetch();
+        }
+
     }
 
 
