@@ -32,7 +32,7 @@ listorder INT (10) ,
 source_type tinyint (1) DEFAULT  0,
 create_time INT (10) ,
 update_time INT (10) ,
-status tinyint (1) ,DEFAULT 0,
-INDEX ('title'),
-INDEX ('create_time')
+status tinyint (1) DEFAULT 0,
+INDEX (title),
+INDEX (create_time)
 )DEFAULT charset=utf8 auto_increment=1;

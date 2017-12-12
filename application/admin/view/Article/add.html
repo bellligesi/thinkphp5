@@ -290,8 +290,9 @@ $(function(){
 			'type':'post',
 			'data':form,
 
-			success:function(type,message,data){
-               alert(2);
+			success:function(data){
+                alert(data);
+				window.location.reload()
 			}
 		})
 	})
